@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ABM Mascotas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="js/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="js/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet" type="text/css" />
+    <link href="js/DataTables/datatables.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <!-- Barra de Navegacion  -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Menu Principal</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Mascota</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cuerpo -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8">
+                <!-- Titulo -->
+                <div class="page-header">
+                    <h1>Sistema de Administracion de Mascotas</h1>
+                </div>
+                <!-- Tabla -->
+                <table class="table" id="tablaMascota">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Raza</th>
+                            <th>Sexo</th>
+                            <th>Edad</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTabla">
+                    </tbody>
+                </table><br>
+                <!-- Botones -->
+                <table class="table">
+                    <tr>
+                        <td align="center">
+                            <button class="btn btn-primary btn-lg" id="agregarMascota">Agregar</button>
+                        </td>
+                        <td align="center"></td>
+                        <td align="center">
+                            <button class="btn btn-primary btn-lg" id="imprimir">Imprimir</button>
+                        </td>
+                    </tr>
+                </table>
+                <!-- Formulario Imprimir -->
+                <form id="imprimirMascota" target="_blank" action="controlador/ruteador/Imprimir.php" method="post">
+                    <input type="hidden" id="Formulario" name="Formulario" value="Mascotas" />
+                    <input type="hidden" id="html" name="html" />
+                </form>
+            </div>
+            <div class="col-lg-2"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalMascota" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="formMascota" class="form-horizontal" data-bv-message="Este valor No es válido"
+                    data-bv-feedbackicons-valid="glyphicon glyphicon-ok" data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                    data-bv-feedbackicons-validating="glyphicon glyphicon-refresh" data-bv-submitbuttons='button[type="submit"]'
+                    data-bv-trigger="focus blur" data-bv-live="enabled">
+                    <!-- Titulo Modal -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="tituloModal">Nuevo Mascota</h4>
+                    </div>
+                    <div class="modal-body">
+                        <!-- ID -->
+                        <div class="form-group">
+                            <input class="form-control" type="hidden" id="id" name="id">
+                        </div>
+                        <!-- Nombre -->
+                        <div class="form-group">
+                            <label class='col-lg-2'>Nombre</label>
+                            <div class='col-lg-10'>
+                                <input class="form-control" type="text" id="nombre" name="nombre" data-bv-notempty="true"
+                                    data-bv-notempty-message="Debes completar el Nombre">
+                            </div>
+                        </div>
+                        <!-- Raza -->
+                        <div class="form-group">
+                            <label class='col-lg-2'>Raza</label>
+                            <div class='col-lg-10'>
+                                <input class="form-control" type="text" id="raza" name="raza" data-bv-notempty="true"
+                                    data-bv-notempty-message="Debes completar la Raza">
+                            </div>
+                        </div>
+                        <!-- Sexo -->
+                        <div class="form-group">
+                            <label class='col-lg-2'>Sexo</label>
+                            <div class='col-lg-10'>
+                                <!-- <input class="form-control" type="text" id="sexo" name="sexo" data-bv-notempty="true"
+                                    data-bv-notempty-message="Debes completar el Sexo"> -->
+                                <select class="form-control" id="sexo" name="sexo" data-bv-notempty="true"
+                                    data-bv-notempty-message="Debes completar el Sexo">
+                                    <option value="" disabled selected>Seleccione sexo...</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Edad -->
+                        <div class="form-group">
+                            <label class='col-lg-2'>Edad</label>
+                            <div class='col-lg-10'>
+                                <input class="form-control" type="text" id="edad" name="edad" data-bv-message="La Edad no es válido"
+                                    data-bv-notempty="true" data-bv-notempty-message="Debes completar  la Edad"
+                                    data-bv-regexp="true" data-bv-regexp-regexp="[0-9]+" data-bv-regexp-message="Solo números en este campo"
+                                    data-bv-stringlength="true" data-bv-stringlength-min="1" data-bv-stringlength-max="2"
+                                    data-bv-stringlength-message="La Edad debe estar entre 0 y 99">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Botones Modal -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" id="guardar" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Librerias -->
+    <script src="js/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap/js/bootstrapValidator.min.js" type="text/javascript"></script>
+    <script src="js/DataTables/datatables.min.js" type="text/javascript"></script>
+    <script src="js/funcionesGeneral.js" type="text/javascript"></script>
+    <script src="js/funcionesMascota.js" type="text/javascript"></script>
+</body>
+
+</html>
